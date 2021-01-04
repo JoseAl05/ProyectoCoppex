@@ -1,0 +1,100 @@
+<div class="row justify-content-md-center">
+    <div class="container d-flex justify-content-center"> 
+        <div class="col-md-8">
+            <div class="cardForm">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Ingresar Comprador al Sistema</h2>
+                        <form #compradorForm="ngForm" (ngSubmit)="addBuyer(compradorForm)"> 
+                            <div class="form-group">
+                                <input type="text" class="form-control"  name="nombreComprador" placeholder="Ingrese nombre del comprador" required [(ngModel)]="createdComprador.nombreComprador" #nombreComprador="ngModel">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control"  name="emailComprador" placeholder="Ingrese email del comprador" required [(ngModel)]="createdComprador.emailComprador" #emailComprador="ngModel">
+                            </div>
+                            <label for="telefonoComprador" class="col-sm-4 col-form-label">Telefono del Comprador</label>
+                            <div class="form-group">
+                                <ngx-intl-tel-input [cssClass]="'form-control'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]" [selectFirstCountry]="false"
+                                    [maxLength]="15" [tooltipField]="TooltipLabel.Name"
+                                    [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                                    [numberFormat]="PhoneNumberFormat.National" name="telefonoComprador" [(ngModel)]="createdComprador.telefonoComprador" #telefonoComprador="ngModel">
+                                </ngx-intl-tel-input>
+                            </div>
+                            <button class="btn btn-primary"> 
+                                Guardar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <table class="table table-striped" datatable>
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre del Comprador</th>
+                        <th>Email del Comprador</th>
+                        <th>Telefono del Comprador</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let buyer of buyers">
+                        <td>{{buyer.nombreComprador}}</td>
+                        <td>{{buyer.emailComprador}}</td>
+                        <td>{{buyer.telefonoComprador}}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" (click)="openModal(editModal,buyer)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button class="btn btn-danger btn-sm"  (click)="deleteUser(buyer.idComprador)">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #editModal let-modal>
+ <div class="modal-header">
+  <h5 class="modal-title" id="editCompradorLabel">Modificar credenciales del Comprador</h5>
+  <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+   <span aria-hidden="true">&times;</span>
+  </button>
+ </div>
+ 
+ <div class="modal-body">
+  <form [formGroup]="editBuyerForm" (ngSubmit)="updateBuyer(editBuyerForm)">
+   <div class="form-group row">
+    <label for="nombreComprador" class="col-sm-4 col-form-label">Nombre del Comprador</label>
+    <input type="hidden" class="form-control" formControlName="idComprador" id="idComprador">
+    <div class="col-sm-8">
+     <input type="text" class="form-control" formControlName="nombreComprador" id="nombreComprador">
+    </div>
+    <label for="emailComprador" class="col-sm-4 col-form-label">Email del Comprador</label>
+    <div class="col-sm-8">
+     <input type="text" class="form-control" formControlName="emailComprador" id="emailComprador">
+    </div>
+    <label for="telefonoComprador" class="col-sm-4 col-form-label">Telefono del Comprador</label>
+    <div class="col-sm-8">
+        <ngx-intl-tel-input [cssClass]="'form-control'"
+            [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]" [selectFirstCountry]="false"
+            [maxLength]="15" [tooltipField]="TooltipLabel.Name"
+            [phoneValidation]="true" [separateDialCode]="separateDialCode"
+            [numberFormat]="PhoneNumberFormat.National" name="telefonoComprador" formControlName="telefonoComprador" id="telefonoComprador">
+        </ngx-intl-tel-input>
+    </div>
+   </div>   
+   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cerrar</button>
+    <button class="btn btn-primary">Guardar cambios</button>
+   </div>
+  </form>
+ </div>
+</ng-template>

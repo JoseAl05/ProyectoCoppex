@@ -1,0 +1,43 @@
+.ng-select.clientSelect {
+    width: 600px;
+  
+  }
+
+  .ng-select.companySelect {
+    width: 300px;
+  
+  }
+
+  .equipoInput{
+      width: 300px;
+  }
+  .cardForm{
+      width: 700px;
+  }
+  .numeroDeParteInput{
+      width: 300px;
+  }
+  .numeroLicitacionInput{
+      width: 300px;
+  }
+  .fechaRecepcionInput{
+      width:100px;
+  }
+  .numeroCotizacionRepresentadaInput{
+      width:400px;
+  }
+  .selectDivisa{
+      width:100px;
+  }
+  .condicionEntregaInput{
+      width: 300px;
+  }
+  .numeroDeOrdenInput{
+      width: 300px;
+  }
+  .compradorSelect{
+      width:400px;
+  }
+  .usuarioSelect{
+      width: 400px;
+  }

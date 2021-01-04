@@ -1,0 +1,183 @@
+<div class="row justify-content-md-center">
+    <div class="container d-flex justify-content-center"> 
+        <div class="col-md-8">
+            <div class="cardForm">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h2>Ingresar Informe Seguimiento de Cotizacion al Sistema</h2>
+                        <form #cotizacionForm="ngForm" (ngSubmit)="addCotizacion(cotizacionForm)">
+                            <label for="cliente" class="col-sm-4 col-form-label">Seleccione al Cliente</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <ng-select [(ngModel)]="createdCotizacion.idCliente" name="cliente" #cliente="ngModel" class="clientSelect">
+                                            <ng-option *ngFor="let client of (clientList | async)" [value]="client.idCliente">{{ client.nombreCliente }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-sm-8 col-form-label">Seleccione la empresa e Ingrese el equipo</label> 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <ng-select [(ngModel)]="createdCotizacion.idEmpresa" name="empresa" #empresa="ngModel" class="companySelect">
+                                            <ng-option *ngFor="let company of (companyList | async)" [value]="company.idEmpresa">{{ company.nombreEmpresa }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="equipoInput">
+                                            <input type="text" class="form-control"  name="nombreEquipo" placeholder="Ingrese nombre del equipo" required [(ngModel)]="createdCotizacion.nombreEquipo" #nombreEquipo="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-sm-10  col-form-label">Ingrese Numero de licitacion, Numero de parte y Fecha de recepcion</label> 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="numeroLicitacionInput">
+                                            <input type="text" class="form-control"  name="numeroLicitacion" placeholder="Ingrese el numero de licitacion" required [(ngModel)]="createdCotizacion.numeroLicitacion" #numeroLicitacion="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="numeroDeParteInput">
+                                            <input type="text" class="form-control"  name="numeroDeParte" placeholder="Ingrese el numero de parte" required [(ngModel)]="createdCotizacion.numeroDeParte" #numeroDeParte="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker1" placeholder="Seleccione fecha de recepcion" name="fechaRecepcion" required [(ngModel)]="createdCotizacion.fechaRecepcion" #fechaRecepcion="ngModel">
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-sm-10  col-form-label">Ingrese Numero de cotizacion representada</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="numeroCotizacionRepresentadaInput">
+                                            <input type="text" class="form-control" name="numeroCotizacionRepresentada"  placeholder="Ingrese el numero de cotizacion representada" required [(ngModel)]="createdCotizacion.numeroCotizacionRepresentada" #numeroCotizacionRepresentada="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-sm-10  col-form-label">Seleccione Divisa e Ingrese Monto comision Coppex</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="selectDivisa">
+                                            <ng-select [(ngModel)]="createdCotizacion.divisa" name="divisa" #divisa="ngModel">
+                                                <ng-option *ngFor="let countryCode of (countryCodesList | async)" [ngValue]="countryCode">{{ countryCode.cc }}</ng-option>
+                                            </ng-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <input type="number" class="form-control" name="montoComisionCoppex"  placeholder="Ingrese el monto de comision de coppex" required [(ngModel)]="createdCotizacion.montoComisionCoppex" #montoComisionCoppex="ngModel">
+                                </div>
+                            </div>
+                            <label class="col-sm-10  col-form-label">Ingrese Condicion de entrega y Plazo de Entrega</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="condicionEntregaInput">
+                                            <input type="text" class="form-control" name="condicionEntrega"  placeholder="Ingrese condicion entrega" required [(ngModel)]="createdCotizacion.condicionEntrega" #condicionEntrega="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="plazo"  placeholder="Ingrese el plazo  de la entrega" required [(ngModel)]="createdCotizacion.plazo" #plazo="ngModel">
+                                </div>
+                            </div>
+                            <label class="col-sm-10  col-form-label">Ingrese Numero de Orden de Compra, Fecha de Emision y Fecha de Entrega</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <div class="numeroDeOrdenInput">
+                                            <input type="text" class="form-control" name="numeroOrden"  placeholder="Ingrese numero de orden de compra" required [(ngModel)]="createdCotizacion.numeroOrden" #numeroOrden="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ml-5">
+                                    <div class="col">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker2" placeholder="Seleccione fecha de emision" name="fechaEmision" required [(ngModel)]="createdCotizacion.fechaEmision" #fechaEmision="ngModel">
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col">
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker3" placeholder="Seleccione fecha de entrega" name="fechaEntrega" required [(ngModel)]="createdCotizacion.fechaEntrega" #fechaEntrega="ngModel">
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-sm-10  col-form-label">Seleccion Comprador y Usuario</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="col">
+                                        <ng-select [(ngModel)]="createdCotizacion.idComprador" name="comprador" #comprador="ngModel" class="compradorSelect">
+                                            <ng-option *ngFor="let buyer of (buyerList | async)" [value]="buyer.idComprador">{{buyer.nombreComprador }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col">
+                                        <ng-select [(ngModel)]="createdCotizacion.idUsuario" name="usuario" #usuario="ngModel" class="usuarioSelect">
+                                            <ng-option *ngFor="let user of (userList | async)" [value]="user.idUsuario">{{user.nombreUsuario }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary"> 
+                                Guardar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 ml-5">
+            <table class="table table-striped" datatable>
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Solicitante</th>
+                        <th>Estado Cotizacion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cotizacion of cotizaciones">
+                        <td>E-{{cotizacion.idCotizacion}}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" >
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </td>
+                        <td>
+                            <select>
+                                <option>EN PROCESO</option>
+                                <option>EN OBSERVACION</option>
+                            </select>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

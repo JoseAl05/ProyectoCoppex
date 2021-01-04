@@ -1,0 +1,110 @@
+<div class="row justify-content-md-center">
+    <div class="container d-flex justify-content-center"> 
+        <div class="col-md-8">
+            <div class="cardForm">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Ingresar Usuario al Sistema</h2>
+                        <form #usuarioForm="ngForm" (ngSubmit)="usuarioForm.form.valid && addUser(usuarioForm)" novalidate> 
+                            <div class="form-group">
+                                <input type="text" class="form-control"  name="nombreUsuario" placeholder="Ingrese nombre del usuario" [(ngModel)]="createdUser.nombreUsuario" #nombreUsuario="ngModel" [ngClass]="{ 'is-invalid': usuarioForm.submitted && nombreUsuario.invalid }" required >
+                                    <div *ngIf="usuarioForm.submitted && nombreUsuario.invalid" class="invalid-feedback">
+                                        <div *ngIf="nombreUsuario.errors.required">Nombre del usuario es requerido!</div>
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" name="emailUsuario" placeholder="Ingrese email del usuario" [(ngModel)]="createdUser.emailUsuario" #emailUsuario="ngModel" [ngClass]="{ 'is-invalid': usuarioForm.submitted && emailUsuario.invalid }" required email>
+                                    <div *ngIf="usuarioForm.submitted && emailUsuario.invalid" class="invalid-feedback">
+                                        <div *ngIf="emailUsuario.errors.required">Email requerido!</div>
+                                        <div *ngIf="emailUsuario.errors.email">Ingrese una direccion de email válido!</div>
+                                    </div>
+                            </div>
+                            <label for="telefonoUsuario" class="col-sm-4 col-form-label">Telefono del Usuario</label>
+                            <div class="form-group">
+                                <ngx-intl-tel-input [cssClass]="'form-control'"
+                                    [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+                                    [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]" [selectFirstCountry]="false"
+                                    [maxLength]="15" [tooltipField]="TooltipLabel.Name"
+                                    [phoneValidation]="true" [separateDialCode]="separateDialCode"
+                                    [numberFormat]="PhoneNumberFormat.National" name="telefonoUsuario" [(ngModel)]="createdUser.telefonoUsuario" #telefonoUsuario="ngModel" [ngClass]="{ 'is-invalid': usuarioForm.submitted && telefonoUsuario.invalid }" required>
+                                </ngx-intl-tel-input>
+                                <div *ngIf="usuarioForm.submitted && telefonoUsuario.invalid" class="invalid-feedback">
+                                    <div *ngIf="telefonoUsuario.errors.required">Telefono del usuario es requerido!</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary"> 
+                                Guardar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <table class="table table-striped" datatable>
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre del Usuario</th>
+                        <th>Email del Usuario</th>
+                        <th>Telefono del Usuario</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{user.nombreUsuario}}</td>
+                        <td>{{user.emailUsuario}}</td>
+                        <td>{{user.telefonoUsuario}}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" (click)="openModal(editModal,user)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button class="btn btn-danger btn-sm"  (click)="deleteUser(user.idUsuario)">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #editModal let-modal>
+ <div class="modal-header">
+  <h5 class="modal-title" id="editUsuarioLabel">Modificar credenciales del Usuario</h5>
+  <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+   <span aria-hidden="true">&times;</span>
+  </button>
+ </div>
+ 
+ <div class="modal-body">
+  <form [formGroup]="editUserForm" (ngSubmit)="updateClient(editUserForm)">
+   <div class="form-group row">
+    <label for="nombreUsuario" class="col-sm-4 col-form-label">Nombre del Usuario</label>
+    <input type="hidden" class="form-control" formControlName="idUsuario" id="idUsuario">
+    <div class="col-sm-8">
+     <input type="text" class="form-control" formControlName="nombreUsuario" id="nombreUsuario">
+    </div>
+    <label for="emailUsuario" class="col-sm-4 col-form-label">Email del Usuario</label>
+    <div class="col-sm-8">
+     <input type="text" class="form-control" formControlName="emailUsuario" id="emailUsuario">
+    </div>
+    <label for="telefonoUsuario" class="col-sm-4 col-form-label">Telefono del Usuario</label>
+    <div class="col-sm-8">
+        <ngx-intl-tel-input [cssClass]="'form-control'"
+            [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="true"
+            [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]" [selectFirstCountry]="false"
+            [maxLength]="15" [tooltipField]="TooltipLabel.Name"
+            [phoneValidation]="true" [separateDialCode]="separateDialCode"
+            [numberFormat]="PhoneNumberFormat.National" name="telefonoUsuario" formControlName="telefonoUsuario" id="telefonoUsuario">
+        </ngx-intl-tel-input>
+    </div>
+   </div>   
+   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cerrar</button>
+    <button class="btn btn-primary">Guardar Cambios</button>
+   </div>
+  </form>
+ </div>
+</ng-template>

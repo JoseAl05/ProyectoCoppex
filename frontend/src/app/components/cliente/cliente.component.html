@@ -1,0 +1,77 @@
+<div class="row justify-content-md-center">
+    <div class="container d-flex justify-content-center"> 
+        <div class="col-md-8">
+            <div class="cardForm">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Ingresar Cliente al Sistema</h2>
+                        <form #clienteForm="ngForm" (ngSubmit)="addClient(clienteForm)"> 
+                            <div class="form-group">
+                                <input type="text" class="form-control"  name="nombreCliente" placeholder="Ingrese nombre del cliente" required [(ngModel)]="createdClient.nombreCliente" #nombreCliente="ngModel">
+                            </div>
+                            <div class="form-group mt-5">
+                                <h4>Seleccione país del Cliente <span class="label label-default"></span></h4>
+                                <ng-select [(ngModel)]="createdClient.pais" name="pais" #country="ngModel">
+                                    <ng-option *ngFor="let country of  (countriesList | async)" [ngValue]="country">{{ country.name }} - {{country.code}}</ng-option>
+                                </ng-select>
+                            </div>
+                            <button class="btn btn-secondary"> 
+                                Guardar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <table class="table table-striped" datatable>
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre del Cliente</th>
+                        <th>País del Cliente</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let client of clients">
+                        <td>{{client.nombreCliente}}</td>
+                        <td>{{client.pais}}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" (click)="openModal(editModal,client)">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button class="btn btn-danger btn-sm"  (click)="deleteClient(client.idCliente)">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #editModal let-modal>
+ <div class="modal-header">
+  <h5 class="modal-title" id="editClientLabel">Edit Client</h5>
+  <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+   <span aria-hidden="true">&times;</span>
+  </button>
+ </div>
+ 
+ <div class="modal-body">
+  <form #editClient="ngForm" [formGroup]="editClientForm" (ngSubmit)="updateClient(editClientForm)">
+   <div class="form-group row">
+    <label for="nombreCliente" class="col-sm-4 col-form-label">Nombre del Cliente</label>
+    <input type="hidden" class="form-control" formControlName="idCliente" id="idCliente">
+    <div class="col-sm-8">
+     <input type="text" class="form-control" formControlName="nombreCliente" id="nombreCliente">
+    </div>
+   </div>   
+   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cerrar</button>
+    <button class="btn btn-primary">Guardar cambios</button>
+   </div>
+  </form>
+ </div>
+</ng-template>
