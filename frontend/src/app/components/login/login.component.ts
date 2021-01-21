@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
 
   public currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<Admin>;
+  token: any[];
 
 
   constructor(
@@ -69,7 +70,10 @@ export class LoginComponent implements OnInit {
     const userLogin = this.authService.signIn(form.value)
     userLogin.subscribe(
       res => {
-        localStorage.setItem('currentUser',JSON.stringify(res));
+        this.token = Object.values(res.body);
+        localStorage.setItem('adminToken',this.token[0]);
+        localStorage.setItem('currentAdmin',this.token[1]);
+        localStorage.setItem('currentIdAdmin',this.token[2]);
         this.currentUserSubject.next(res);
         this.success();
         this.router.navigate(['/profile',form.controls['username'].value])
@@ -89,7 +93,9 @@ export class LoginComponent implements OnInit {
   }
 
   logout(){
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('currentAdmin');
+    localStorage.removeItem('currentIdAdmin');
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }

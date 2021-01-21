@@ -3,19 +3,17 @@ const dotenv =  require("dotenv");
 
 
 module.exports = async(req,res,next) => {
-    if (process.env.NODE_ENV !== 'development') {
-        dotenv.config();
-    }
+    dotenv.config();
     const accessTokenSecret = process.env.SECRETKEY;
     try {
-        const jwtToken = req.header("token");
+        const jwtToken = req.header("adminToken");
         if(!jwtToken){
             return res.status(403).json("Not Authorize");
         }
 
         const payload = await jwt.verify(jwtToken, accessTokenSecret);
 
-        req.administrador = payload.adminstrador;
+        req.idAdministrador = payload.idAdministrador;
         next();
 
     } catch (error) {

@@ -41,3 +41,6 @@
   .usuarioSelect{
       width: 400px;
   }
+  .informeModal .modal-lg {
+    width: 700px;
+  }

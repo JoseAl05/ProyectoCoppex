@@ -16,38 +16,22 @@ declare var $:any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  faVideo = faVideo;
+  currentAdmin: string;
 
-  public currentUserSubject: BehaviorSubject<any>;
-  public currentUser: Observable<Admin>;
-  public username: string;
-  private i : number;
-  public value: Admin;
+
 
   constructor(public adminService: AdministradorService,private route: ActivatedRoute,public authService: AuthService,public loginComponent: LoginComponent ){
-    this.i = 0;
-    let key = localStorage.key(this.i);
-    this.value = JSON.parse(localStorage.getItem(key));
-    console.log(this.value);
+
   }
 
   ngOnInit(): void{
-
+    this.getCurrentAdmin();
   }
 
-  public get currentUserValue(): string{
-    if(this.value == null)
-    {
-      this.username = null;
-      return this.username;
-    }
-    else{
-      this.username = this.value.username;
-      console.log(this.username);
-      return this.username;
-    }
+  getCurrentAdmin(){
+    this.currentAdmin = localStorage.getItem('currentAdmin');
+    return this.currentAdmin;
   }
-
 
   title = 'frontend';
 }

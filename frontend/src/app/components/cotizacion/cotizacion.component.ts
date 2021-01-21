@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdministradorService } from '../../services/administrador.service';
 import { CotizacionService } from '../../services/cotizacion.service';
 import { ClienteService } from '../../services/cliente.service';
 import { EmpresaService } from '../../services/empresa.service';
@@ -22,14 +23,14 @@ import { Cliente } from 'src/app/models/clientes';
 export class CotizacionComponent implements OnInit {
 
   createdCotizacion : Cotizacion ={
-    idAdministrador : 0,
+    idAdministrador : '',
     idCliente: 0,
     idComprador: 0,
     idEmpresa : 0,
     idUsuario : 0,
     nombreEquipo: '',
     numeroDeParte: '',
-    numeroLicitacion: '',
+    numeroDeLicitacion: '',
     fechaRecepcion: new Date(),
     numeroCotizacionRepresentada: '',
     divisa : '',
@@ -43,7 +44,16 @@ export class CotizacionComponent implements OnInit {
     seguimiento: ''
   };
   cotizaciones : Cotizacion[];
+  informeCotizacion : Cotizacion[];
   clientes : Cliente[];
+  clientName : string;
+  companyName: string;
+  buyerName: string;
+  buyerEmail:string;
+  buyerPhone:string;
+  userName:string;
+  userEmail:string;
+  userPhone:string;
   countryCodesList:any;
   clientList : any;
   companyList : any;
@@ -54,6 +64,7 @@ export class CotizacionComponent implements OnInit {
   objectMapped: any;
   objectToken: any;
   mapToken: any;
+  currentAdmin: string;
 
   constructor(
     private cotizacionService : CotizacionService,
@@ -62,6 +73,7 @@ export class CotizacionComponent implements OnInit {
     private authService : AuthService,
     private userService: UsuarioService,
     private buyerService: CompradorService,
+    private adminService:  AdministradorService,
     private router : Router,
     private fromBuilder: FormBuilder,
     private modalService: NgbModal,
@@ -75,6 +87,20 @@ export class CotizacionComponent implements OnInit {
     this.getBuyers();
     this.getUsers();
     this.getCotizaciones();
+  }
+
+  openModal(targetModal,cotizacion){
+    this.modalService.open(targetModal,{
+      centered: true,
+      backdrop: 'static',
+      size:'xl',
+      windowClass: 'informeModal'
+    });
+    this.getAClient(cotizacion.idCliente);
+    this.getACompany(cotizacion.idEmpresa);
+    this.getABuyer(cotizacion.idComprador);
+    this.getAUser(cotizacion.idUsuario);
+    this.informeCotizacion = cotizacion;
   }
 
         //**ALERTS**//
@@ -123,22 +149,22 @@ export class CotizacionComponent implements OnInit {
     
     this.objectCountryCodeSelected = form.control.value['divisa'];
     this.objectMapped = Object.values(this.objectCountryCodeSelected)
+    console.log(this.objectMapped);
 
-    this.objectToken = this.authService.getToken();
-    this.mapToken = Object.values(this.objectToken);
+    this.currentAdmin = this.authService.getCurrentIdAdmin();
 
 
 
     const cotizacionData = {
-      idAdministrador: this.mapToken[2],
+      idAdministrador: this.currentAdmin,
       idCliente: form.control.value['cliente'],
       idEmpresa: form.control.value['empresa'],
       nombreEquipo: form.control.value['nombreEquipo'],
-      numeroLicitacion : form.control.value['numeroLicitacion'],
+      numeroDeLicitacion : form.control.value['numeroDeLicitacion'],
       numeroDeParte: form.control.value['numeroDeParte'],
       fechaRecepcion: form.control.value['fechaRecepcion'],
       numeroCotizacionRepresentada: form.control.value['numeroCotizacionRepresentada'],
-      divisa: this.objectMapped[1],
+      divisa: this.objectMapped[0],
       montoComisionCoppex: form.control.value['montoComisionCoppex'],
       condicionEntrega: form.control.value['condicionEntrega'],
       plazo : form.control.value['plazo'],
@@ -211,11 +237,35 @@ export class CotizacionComponent implements OnInit {
     )
   }
 
+
+  getAClient(idCliente : number){
+    this.clientService.getAClient(idCliente).subscribe(
+      res => {
+        this.clientName = res.body[0].nombreCliente;
+        console.log(res.body[0].nombreCliente);
+      },
+      err => {
+        console.error(err);
+      }
+    )
+  }
+
   getBusiness(){
     this.companyList = this.companyService.getBusiness().pipe(
       map(business => {
         return Object.values(business);
       })
+    )
+  }
+
+  getACompany(idEmpresa:number){
+    this.companyService.getACompany(idEmpresa).subscribe(
+      res => {
+        this.companyName = res.body[0].nombreEmpresa;
+      },
+      err => {
+        console.error(err);
+      }
     )
   }
 
@@ -235,12 +285,51 @@ export class CotizacionComponent implements OnInit {
     )
   }
 
+  getAUser(idUsuario : number){
+    this.userService.getAUser(idUsuario).subscribe(
+      res => {
+        this.userName = res.body[0].nombreUsuario;
+        this.userEmail = res.body[0].emailUsuario;
+        this.userPhone = res.body[0].telefonoUsuario;
+      },
+      err => {
+        console.error(err);
+      }
+    )
+  }
+
   getBuyers(){
     this.buyerList = this.buyerService.getBuyers().pipe(
       map(buyers => {
         return Object.values(buyers);
       })
     )
+  }
+
+  getABuyer(idComprador:number){
+    this.buyerService.getABuyer(idComprador).subscribe(
+      res => {
+        console.log(res.body);
+        this.buyerName = res.body[0].nombreComprador;
+        this.buyerEmail = res.body[0].emailComprador;
+        this.buyerPhone = res.body[0].telefonoComprador;
+      },
+      err => {
+        console.error(err);
+      }
+    )
+  }
+
+  getCotizante(idAdministrador : number){
+    this.adminService.getACotizante(idAdministrador).subscribe(
+      res => {
+        console.log(res.body);
+      },
+      err => {
+        console.log(err);
+      }
+    )
+
   }
 
 

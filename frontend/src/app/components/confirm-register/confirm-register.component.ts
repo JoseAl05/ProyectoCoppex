@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
 
 import { Admin } from '../../models/admins';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -13,31 +14,25 @@ import { Admin } from '../../models/admins';
 })
 export class ConfirmRegisterComponent implements OnInit {
 
-  public currentUserSubject: BehaviorSubject<any>;
-  public currentUser: Observable<Admin>;
-  public username: string;
-  private i : number;
-  public value: Admin;
+  currentAdmin : string;
 
 
-  constructor(public router : RouterModule) { 
-    this.i = 0;
-    let key = localStorage.key(this.i);
-    this.value = JSON.parse(localStorage.getItem(key));
-    console.log(this.value);
+
+  constructor(public router : RouterModule,private authService : AuthService) { 
   }
 
-  public get currentUserValue(): string{
-    this.username = this.value.username;
-    console.log(this.username);
-    return this.username;
-  }
+
+  
 
 
   ngOnInit(): void {
+    this.getCurrentAdmin();
   }
 
-
+  getCurrentAdmin(){
+    this.currentAdmin = localStorage.getItem('currentAdmin');
+    return this.currentAdmin;
+  }
 
 
 }

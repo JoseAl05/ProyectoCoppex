@@ -16,6 +16,7 @@ export class ClienteService {
   URL_DELETECLIENT = 'http://localhost:3000/api/clients/deleteClient';
   URL_UPDATECLIENT = 'http://localhost:3000/api/clients/updateClient';
   URL_GETCLIENTID  = 'http://localhost:3000/api/clients/idClient';
+  URL_GETACLIENT =  'http://localhost:3000/api/clients/getAClient';
 
   constructor(private http : HttpClient,private router: Router ) { }
 
@@ -29,6 +30,10 @@ export class ClienteService {
 
   getClientId(nombreCliente : string):Observable<HttpResponse<Cliente>> {
     return this.http.get<Cliente>(`${this.URL_GETCLIENTID}/${nombreCliente}`,{observe:'response',responseType:'json'});
+  }
+
+  getAClient(idCliente : number){
+    return this.http.get<Cliente>(`${this.URL_GETACLIENT}/${idCliente}`,{observe:'response'});
   }
 
   getCountries(){

@@ -17,6 +17,7 @@ export class AdministradorService {
   URL_UPDATE = 'http://localhost:3000/api/admins/updateUser';
   URL_LOGIN = 'http://localhost:3000/api/admins/signin';
   URL_GETAUSER = 'http://localhost:3000/api/users/getAUser';
+  URL_GETACOTIZANTE = 'http://localhost:3000/api/admins/getACotizante';
   
   createdUser : Admin ={
     username: '',
@@ -49,6 +50,9 @@ export class AdministradorService {
 
   deleteUser(id : number){
     return this.http.delete(`${this.URL_DELETE}/${id}`);
+  }
+  getACotizante(idAdministrador:number){
+    return this.http.post<String>(this.URL_GETACOTIZANTE,idAdministrador,{observe:'response'});
   }
 
 

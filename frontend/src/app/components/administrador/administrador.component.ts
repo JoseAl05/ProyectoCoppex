@@ -6,6 +6,7 @@ import { NgForm} from '@angular/forms'
 import { Admin } from 'src/app/models/admins';
 import { ToastrService } from 'ngx-toastr'
 import { BehaviorSubject, Observable } from 'rxjs';
+import * as moment from "moment";
 
 
 @Component({
@@ -17,6 +18,7 @@ export class AdministradorComponent implements OnInit {
 
   public currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<Admin>;
+  token: any[];
 
   constructor(
     public adminService: AdministradorService,
@@ -25,7 +27,7 @@ export class AdministradorComponent implements OnInit {
     private toastr: ToastrService
   ) 
   {
-    this.currentUserSubject = new BehaviorSubject<Admin>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject(localStorage.getItem('adminToken'));
     this.currentUser = this.currentUserSubject.asObservable();
   }
   
@@ -59,11 +61,17 @@ export class AdministradorComponent implements OnInit {
   addAdmin(form: NgForm){
     form.controls['username'].setErrors({'Incorrect': true});
 
+
+
     this.authService.createAdmin(form.value).subscribe(
       res => {
-        localStorage.setItem('currentUser',JSON.stringify(res));
+        this.token = Object.values(res.body);
+        console.log(res.body);
+        localStorage.setItem('adminToken',this.token[0]);
+        localStorage.setItem('currentAdmin',this.token[1]);
+        localStorage.setItem('currentIdAdmin',this.token[2]);
         this.currentUserSubject.next(res);
-        console.log(localStorage.getItem('currentUser'));
+        console.log(localStorage.getItem('adminToken'));
         form.reset();
         this.router.navigate(['/confirmRegister']).then(() => {
           this.success()

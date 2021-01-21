@@ -40,6 +40,21 @@ module.exports = {
             })
             
     },
+    getAClient(req,res){
+        return Cliente
+            .findAll({
+                where:{
+                    idCliente : req.params.idCliente
+                }
+            })
+            .then(cliente => {
+                res.json(cliente);
+            })
+            .catch(err => {
+                res.status(500).send({message:err.message});
+            })
+
+    },
     deleteClient(req,res){
         return Cliente
             .destroy({

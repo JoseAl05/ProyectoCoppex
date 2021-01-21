@@ -57,6 +57,22 @@ module.exports = {
             .catch(err => {
                 res.status(500).send(err);
             });
+    },
+
+    getACotizante(req,res){
+        return Administrador
+            .findAll({
+                where:{
+                    idAdministrador:req.body.idAdministrador
+                },
+                attributes: ['username']
+            })
+            .then(cotizante => {
+                res.json(cotizante);
+            })
+            .catch(err =>  {
+                res.status(500).send({message:err.message});
+            })
     }
 
 }

@@ -24,6 +24,20 @@ module.exports = {
             })
 
     },
+    getACompany(req,res){
+        return Empresa
+            .findAll({
+                where:{
+                    idEmpresa:req.params.idEmpresa
+                }
+            })
+            .then(empresa => {
+                res.json(empresa);
+            })
+            .catch(err => {
+                res.status(500).send({message:err.message});
+            })
+    },
     deleteCompany(req,res){
         return Empresa
             .destroy({

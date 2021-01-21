@@ -21,10 +21,12 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { CustomFormsModule } from 'ngx-custom-validators';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-
 import {MatInputModule} from '@angular/material/input';
-
 import {MatNativeDateModule} from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+import localeCl from '@angular/common/locales/es-CL';
+
+registerLocaleData(localeCl, 'cl');
 
 
 
@@ -93,7 +95,8 @@ import { CotizacionComponent } from './components/cotizacion/cotizacion.componen
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
-    }
+    },
+    {provide: localeCl, useValue: 'cl' }
   ],
   bootstrap: [AppComponent]
 })

@@ -8,9 +8,7 @@ const dotenv =  require("dotenv");
 verifyToken = (req,res,next) => {
     const token = req.headers["x-access-token"];
     console.log(token);
-    if (process.env.NODE_ENV !== 'development') {
-        dotenv.config();
-    }
+    dotenv.config();
 
     if(!token){
         res.status(403).send({

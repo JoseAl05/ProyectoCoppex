@@ -11,7 +11,7 @@ module.exports = {
                 idUsuario : req.body.idUsuario,
                 nombreEquipo : req.body.nombreEquipo,
                 numeroDeParte: req.body.numeroDeParte,
-                numeroLicitacion : req.body.numeroLicitacion,
+                numeroDeLicitacion : req.body.numeroDeLicitacion,
                 fechaRecepcion: req.body.fechaRecepcion,
                 numeroCotizacionRepresentada: req.body.numeroCotizacionRepresentada,
                 divisa : req.body.divisa,

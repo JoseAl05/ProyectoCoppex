@@ -30,14 +30,14 @@ module.exports = {
                     username: req.body.username
                 }
             })
-            .then(user => {
-                if(!user){
-                    return res.status(404).send({message: "User not found"});
+            .then(admin => {
+                if(!admin){
+                    return res.status(404).send({message: "Administrador not found"});
                 }
 
                 const passwordIsValid = bcrypt.compareSync(
                     req.body.password,
-                    user.password
+                    admin.password
                 );
                 if(!passwordIsValid){
                         return res.status(401).send({
@@ -45,10 +45,11 @@ module.exports = {
                         message: "Invalid Password"
                     });
                 }
-                const token = jwtGenerator(user.id)
+                const token = jwtGenerator(admin.idAdministrador)
                     res.status(200).json({
                         token:token,
-                        username : user.username
+                        username : admin.username,
+                        idAdministrador : admin.idAdministrador
                     });
             })
             .catch(err => {

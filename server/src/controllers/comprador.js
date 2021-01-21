@@ -26,6 +26,20 @@ module.exports = {
             })
 
     },
+    getABuyer(req,res){
+        return Comprador
+            .findAll({
+                where:{
+                    idComprador : req.params.idComprador
+                }
+            })
+            .then(comprador => {
+                res.json(comprador);
+            })
+            .catch(err => {
+                res.status(500).send({message:err.message});
+            })
+    },
     deleteBuyer(req,res){
         return Comprador
             .destroy({

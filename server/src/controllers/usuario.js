@@ -26,6 +26,20 @@ module.exports = {
             })
 
     },
+    getAUser(req,res){
+        return Usuario
+            .findAll({
+                where:{
+                    idUsuario : req.params.idUsuario
+                }
+            })
+            .then(usuario => {
+                res.json(usuario);
+            })
+            .catch(err => {
+                res.status(500).send({message:err.message});
+            })
+    },
     deleteUser(req,res){
         return Usuario
             .destroy({

@@ -25,7 +25,7 @@ router.use(function(req,res,next){
 //** ADMINISTRADOR ROUTES**//
 router.post('/admins/signup',[verifySignup.checkDuplicateNickname],AuthController.create);
 router.post('/admins/signin',AuthController.login);
-router.get('/admins/isVerify',authorization,async (req,res) => {
+router.post('/admins/isVerify/:adminToken',authorization,async (req,res) => {
     try {
         res.json(true);
     } catch (err) {
@@ -41,12 +41,14 @@ router.get('/admins/getUsers',AdministradorController.getUsers);
 router.post('/admins/getAUser',AdministradorController.getAUser);
 router.put('/admins/updateUser/:idAdministrador',[verifySignup.checkDuplicateNickname],AdministradorController.updateUser);
 router.delete('/admins/deleteUser/:id',AdministradorController.deleteUser);
+router.post('/admins/getACotizante',AdministradorController.getACotizante);
 
 //** CLIENTE ROUTES **//
 
 router.post('/clients/addClient',ClienteController.createClient);
 router.get('/clients/getClients',ClienteController.getAllClients);
 router.get('/clients/idClient/:nombreCliente',ClienteController.getIdClient);
+router.get('/clients/getAClient/:idCliente',ClienteController.getAClient);
 router.delete('/clients/deleteClient/:idCliente',ClienteController.deleteClient);
 router.put('/clients/updateClient/:idCliente',ClienteController.updateCliente);
 
@@ -54,6 +56,7 @@ router.put('/clients/updateClient/:idCliente',ClienteController.updateCliente);
 
 router.post('/users/addUser',UsuarioController.createUser);
 router.get('/users/getUsers',UsuarioController.getAllUsers);
+router.get('/users/getAUser/:idUsuario',UsuarioController.getAUser);
 router.delete('/users/deleteUser/:idUsuario',UsuarioController.deleteUser);
 router.put('/users/updateClient/:idUsuario',UsuarioController.updateUser);
 
@@ -61,6 +64,7 @@ router.put('/users/updateClient/:idUsuario',UsuarioController.updateUser);
 
 router.post('/buyers/addBuyer',CompradorController.createBuyer);
 router.get('/buyers/getBuyers',CompradorController.getAllBuyers);
+router.get('/buyers/getABuyer/:idComprador',CompradorController.getABuyer);
 router.delete('/buyers/deleteBuyer/:idComprador',CompradorController.deleteBuyer);
 router.put('/buyers/updateBuyer/:idComprador',CompradorController.updateBuyer);
 
@@ -68,6 +72,7 @@ router.put('/buyers/updateBuyer/:idComprador',CompradorController.updateBuyer);
 
 router.post('/business/addCompany',EmpresaController.createCompany);
 router.get('/business/getBusiness',EmpresaController.getAllBusiness);
+router.get('/business/getACompany/:idEmpresa',EmpresaController.getACompany);
 router.delete('/business/deleteCompany/:idEmpresa',EmpresaController.deleteCompany);
 router.put('/business/updateCompany/:idEmpresa',EmpresaController.updateCompany);
 

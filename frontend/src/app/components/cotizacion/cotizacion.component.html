@@ -2,7 +2,7 @@
     <div class="container d-flex justify-content-center"> 
         <div class="col-md-8">
             <div class="cardForm">
-                <div class="card mt-5">
+                <div class="card">
                     <div class="card-body">
                         <h2>Ingresar Informe Seguimiento de Cotizacion al Sistema</h2>
                         <form #cotizacionForm="ngForm" (ngSubmit)="addCotizacion(cotizacionForm)">
@@ -38,7 +38,7 @@
                                 <div class="form-group">
                                     <div class="col">
                                         <div class="numeroLicitacionInput">
-                                            <input type="text" class="form-control"  name="numeroLicitacion" placeholder="Ingrese el numero de licitacion" required [(ngModel)]="createdCotizacion.numeroLicitacion" #numeroLicitacion="ngModel">
+                                            <input type="text" class="form-control"  name="numeroDeLicitacion" placeholder="Ingrese el numero de licitacion" required [(ngModel)]="createdCotizacion.numeroDeLicitacion" #numeroDeLicitacion="ngModel">
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                     <div class="col">
                                         <div class="selectDivisa">
                                             <ng-select [(ngModel)]="createdCotizacion.divisa" name="divisa" #divisa="ngModel">
-                                                <ng-option *ngFor="let countryCode of (countryCodesList | async)" [ngValue]="countryCode">{{ countryCode.cc }}</ng-option>
+                                                <ng-option *ngFor="let countryCode of (countryCodesList | async)" [value]="countryCode.symbol">{{ countryCode.cc }}</ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
@@ -155,24 +155,21 @@
                         <th>ID</th>
                         <th>Solicitante</th>
                         <th>Estado Cotizacion</th>
+                        <th><th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let cotizacion of cotizaciones">
                         <td>E-{{cotizacion.idCotizacion}}</td>
+                        <td></td>
+                        <td></td>
                         <td>
-                            <button class="btn btn-secondary btn-sm">
+                            <button class="btn btn-secondary btn-sm"  (click)="openModal(editModal,cotizacion)">
                                 <i class="material-icons">edit</i>
                             </button>
                             <button class="btn btn-danger btn-sm" >
                                 <i class="material-icons">delete</i>
                             </button>
-                        </td>
-                        <td>
-                            <select>
-                                <option>EN PROCESO</option>
-                                <option>EN OBSERVACION</option>
-                            </select>
                         </td>
 
                     </tr>
@@ -181,3 +178,82 @@
         </div>
     </div>
 </div>
+
+<ng-template #editModal let-modal>
+ <div class="modal-header">
+  <h3 class="modal-title" id="editUsuarioLabel">Informe de seguimiento E-{{informeCotizacion.idCotizacion}}</h3>
+  <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+   <span aria-hidden="true">&times;</span>
+  </button>
+ </div>
+ 
+ <div class="modal-body">
+    <div class="container">
+        <div class="row">
+            <h2 class="font-weight-bold">Cliente: </h2>
+            <p class="mt-2 ml-2">{{clientName}}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <h2 class="font-weight-bold">Equipo/Empresa: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.nombreEquipo}}</p>
+            <p class="mt-2">-{{companyName}}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <h2 class="font-weight-bold">N° Licitacion: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.numeroDeLicitacion}}</p>
+            <h2 class="font-weight-bold ml-5">N° De Parte: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.numeroDeParte}}</p>
+            <h2 class="font-weight-bold ml-5">Fecha Recepcion: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.fechaRecepcion | date:'shortDate':'cl'}}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <h2 class="font-weight-bold">N° Cotizacion Representada: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.numeroCotizacionRepresentada}}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <h2 class="font-weight-bold">Monto Comision Coppex: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.divisa}} {{informeCotizacion.montoComisionCoppex}}</p>
+            <h2 class="font-weight-bold ml-2">Condicion Entrega: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.condicionEntrega}}</p>
+            <h2 class="font-weight-bold ml-2">N° Orden de Compra: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.numeroOrden}}</p>
+        </div>
+        <div class="row">
+            <h2 class="font-weight-bold">Fecha Emision: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.fechaEmision | date:'shortDate':'cl'}}</p>
+            <h2 class="font-weight-bold ml-2">Fecha Entrega: </h2>
+            <p class="mt-2 ml-2">{{informeCotizacion.fechaEntrega | date:'shortDate':'cl'}}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2 class="font-weight-bold">Coordinador Comprador(Nombre,Email,Telefono): </h2>
+                <p class="mt-2 ml-2">{{buyerName}}</p>
+                <p class="mt-2 ml-2">{{buyerEmail}}</p>
+                <p class="mt-2 ml-2">{{buyerPhone}}</p>
+            </div>
+            <div class="col">
+                <h2 class="font-weight-bold ml-5">Coordinador Usuario(Nombre,Email,Telefono): </h2>
+                <p class="mt-2 ml-5">{{userName}}</p>
+                <p class="mt-2 ml-5">{{userEmail}}</p>
+                <p class="mt-2 ml-5">{{userPhone}}</p>
+            </div>
+        </div>
+    </div>
+ </div>
+
+</ng-template>

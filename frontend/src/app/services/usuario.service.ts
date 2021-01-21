@@ -12,6 +12,7 @@ export class UsuarioService {
   URL_GETALLUSERS = 'http://localhost:3000/api/users/getUsers';
   URL_DELETEUSER = 'http://localhost:3000/api/users/deleteUser';
   URL_UPDATEUSER = 'http://localhost:3000/api/users/updateUser';
+  URL_GETAUSER = 'http://localhost:3000/api/users/getAUser'
 
   constructor(private http : HttpClient,private router: Router) { }
 
@@ -21,6 +22,10 @@ export class UsuarioService {
 
   getUsers(){
     return this.http.get<Usuario[]>(this.URL_GETALLUSERS);
+  }
+
+  getAUser(idUsuario : number){
+    return this.http.get<Usuario>(`${this.URL_GETAUSER}/${idUsuario}`,{observe:'response'});
   }
 
   updateUser(user : Usuario){

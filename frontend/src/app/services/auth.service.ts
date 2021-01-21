@@ -4,6 +4,7 @@ import { Router } from '@angular/router'
 import { Admin } from '../models/admins';
 import { HttpClient } from '@angular/common/http'
 import { LoginComponent }from '../components/login/login.component';
+import * as moment from "moment";
 
 @Injectable({
   providedIn: 'root'
@@ -26,25 +27,22 @@ export class AuthService {
 
 
   createAdmin(admin: Admin){
-    return this.http.post(this.URL_CREATE,admin);
+    return this.http.post<Admin>(this.URL_CREATE,admin,{observe:'response'});
 
   }
 
   signIn(user: Admin){
-    console.log(this.http.get(this.URL_VERIFY));
-    if(this.http.get(this.URL_VERIFY))
+    console.log(this.http.post(`${this.URL_VERIFY}/${this.getToken()}`,{observe:'response'}));
+    if(this.http.post(`${this.URL_VERIFY}/${this.getToken()}`,{observe:'response'}))
     {
-      return this.http.post(this.URL_LOGIN,user);
+      return this.http.post(this.URL_LOGIN,user,{observe:'response'});
     }
+
   }
 
 
   loggedIn(){
-    for(let i = 0 ; i<= 0 ; i++){
-      let key = localStorage.key(i);
-      let value = JSON.parse(localStorage.getItem(key));
-    }
-    if(JSON.parse(localStorage.getItem('currentUser'))){
+    if(localStorage.getItem('adminToken')){
       return true;
     }
     else{
@@ -53,11 +51,11 @@ export class AuthService {
   }
 
   getToken(){
-    for(let i = 0 ; i<= 0 ; i++){
-      let key = localStorage.key(i);
-      let value = JSON.parse(localStorage.getItem(key));
-      return value;
-    }
+    return localStorage.getItem('adminToken');
+  }
+
+  getCurrentIdAdmin(){
+    return localStorage.getItem('currentIdAdmin');
   }
 
 

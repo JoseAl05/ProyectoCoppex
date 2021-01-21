@@ -11,7 +11,7 @@
             <ng-container *ngIf="!authService.loggedIn(); else loggedInProfile">
             </ng-container>
             <ng-template #loggedInProfile>
-              <a class="nav-link" [routerLink]="['/profile/',currentUserValue]" routerLinkActive = "active" style="cursor: pointer;">Profile</a>
+              <a class="nav-link" [routerLink]="['/profile/',currentAdmin]" routerLinkActive = "active" style="cursor: pointer;">Profile</a>
             </ng-template>
           </li>
           <li class="nav-item">
@@ -26,6 +26,8 @@
           <li class="nav-item">
             <a class="nav-link" [routerLink]="['/addCompany']" routerLinkActive = "active">Empresas</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/addCotizacion']" routerLinkActive = "active">Cotizaciones</a>
         </ul>
       </div>
         <ul class="navbar-nav mr-auto">
